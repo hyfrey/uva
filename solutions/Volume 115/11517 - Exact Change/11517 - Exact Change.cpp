@@ -1,5 +1,10 @@
 #include <vector>
 #include <cstdio>
+#include <algorithm>
+
+using namespace std;
+
+enum {MAX_VALUE=10000};
 
 int main()
 {
@@ -17,9 +22,23 @@ int main()
             coins[i] = coin;
         }
         
-        vector<int> v(prices+1, 0);
-        int pays = 0;
-        int paysn = 0;
+        vector<int> v(price+MAX_VALUE+10, INT_MAX);
         
+        v[0] = 0;
+        for (int i = 0; i <= price; ++i) {
+            if (v[i] != INT_MAX) {
+                for (int j = 0; j < coins.size(); ++j) {
+                    printf("%d+%d=%d\n", i, coins[j], i+coins[j]);
+                    v[i+coins[j]] = min(v[i+coins[j]], v[i]+1);
+                }
+            }
+        }
+        
+        for (int i = price; i < v.size(); ++i) {
+            if (v[i] != INT_MAX) {
+                printf("%d %d\n", i, v[i]);
+                break;
+            }
+        }
     }
 }
